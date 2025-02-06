@@ -67,6 +67,42 @@ int	key_hook(int key, t_fractol *fractol)
 	return (0);
 }
 
+void	create_image(t_fractol *fractol)
+{
+	int			width;
+	int			height;
+	void		*img;
+	char		*image_test[14];
+
+	image_test[0] = "10 10 3 1";
+	image_test[1] = "x c #FF0000";
+	image_test[2] = ". c #FFFFFF";
+	image_test[3] = "o c #FFFF00";
+	image_test[4] = "xxxxxxxxxx";
+	image_test[5] = "x..o..o..x";
+	image_test[6] = "x.o..o..ox";
+	image_test[7] = "xo..o..o.x";
+	image_test[8] = "x..o..o..x";
+	image_test[9] = "x.o..o..ox";
+	image_test[10] = "xo..o..o.x";
+	image_test[11] = "x..o..o..x";
+	image_test[12] = "x.o..o..ox";
+	image_test[13] = "xxxxxxxxxx";
+
+	if (!fractol->mlx)
+	{
+		perror("MLX not initialized\n");
+		exit(1);
+	}
+	img = mlx_xpm_to_image(fractol->mlx, "test_image.xpm", &width, &height);
+	if (!img)
+	{
+		perror("img not generated\n");
+		close_handle(fractol);
+	}
+	mlx_put_image_to_window(fractol->mlx, fractol->win, img, 700, 300);
+}
+
 int	main(int argc, char **argv)
 {
 	t_fractol	*fractol;
@@ -85,6 +121,7 @@ int	main(int argc, char **argv)
 	fractol = fractol_init(width, height);
 	if (!fractol)
 		return (1);
+	create_image(fractol);
 	mlx_loop(fractol->mlx);
 	return (0);
 }
