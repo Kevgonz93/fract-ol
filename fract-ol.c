@@ -1,4 +1,4 @@
-#include "fractol-mac.h"
+// #include "fractol-mac.h"
 #include "fractol-linux.h"
 
 void	mouse_init(t_fractol *fractol)

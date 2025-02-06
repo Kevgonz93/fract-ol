@@ -1,4 +1,4 @@
-#include "../fractol-mac.h"
+// #include "../fractol-mac.h"
 #include "../fractol-linux.h"
 
 typedef struct s_mouse

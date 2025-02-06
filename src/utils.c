@@ -1,4 +1,4 @@
-#include "../fract-ol.h"
+#include "../fractol-linux.h"
 
 int	mouse_click(int button, int x, int y, t_fractol *fractol)
 {
