@@ -1,7 +1,7 @@
 #ifndef FRACT_OL_H
 # define FRACT_OL_H
 
-# include "minilibx/mlx.h"
+# include "minilibx-linux/mlx.h"
 # include "src/types.h"
 # include <stdlib.h>
 # include <stdio.h>
