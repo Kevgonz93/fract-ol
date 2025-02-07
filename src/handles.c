@@ -1,4 +1,4 @@
-#include "../fractol-linux.h"
+#include "../fract-ol.h"
 
 int	zoom_handle(int key, t_fractol *fractol)
 {

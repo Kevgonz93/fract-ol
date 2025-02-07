@@ -1,5 +1,4 @@
-// #include "fractol-mac.h"
-#include "fractol-linux.h"
+#include "fract-ol.h"
 
 void	mouse_init(t_fractol *fractol)
 {
@@ -8,18 +7,13 @@ void	mouse_init(t_fractol *fractol)
 	{
 		perror("malloc");
 		free(fractol->mlx);
-		free(fractol->mouse);
 		free(fractol);
 		exit(1);
 	}
-	fractol->mouse->x = 0;
-	fractol->mouse->y = 0;
-	mlx_mouse_hook(fractol->win, mouse_click, fractol);
-	mlx_hook(fractol->win, 6, 0, mouse_move, fractol);
 	mlx_key_hook(fractol->win, key_hook, fractol);
 }
 
-t_fractol	*fractol_init(int width, int height)
+t_fractol	*fractol_init(char *fractal)
 {
 	t_fractol	*fractol;
 
@@ -29,11 +23,23 @@ t_fractol	*fractol_init(int width, int height)
 	fractol->mlx = mlx_init();
 	if (!fractol->mlx)
 		return (perror("mlx_init fail"), free(fractol), NULL);
-	fractol->width = width;
-	fractol->height = height;
+	fractol->max_iter = 100;
+	fractol->width = 800;
+	fractol->height = 800;
 	fractol->zoom = 1;
 	fractol->x = 0;
 	fractol->y = 0;
+	fractol->color = 0x00FF00;
+	if (!strcmp(fractal, "mandelbrot"))
+		fractol->fractal = mandelbrot;
+	// else if (!ft_strcmp(fractal, "julia"))
+	// 	fractol->fractal = julia;
+	else
+	{
+		free(fractol->mlx);
+		free(fractol);
+		return (perror("invalid fractal"), NULL);
+	}
 	fractol->win = mlx_new_window(fractol->mlx,
 			fractol->width, fractol->height, "fract-ol");
 	if (!fractol->win)
@@ -67,61 +73,21 @@ int	key_hook(int key, t_fractol *fractol)
 	return (0);
 }
 
-void	create_image(t_fractol *fractol)
-{
-	int			width;
-	int			height;
-	void		*img;
-	char		*image_test[14];
-
-	image_test[0] = "10 10 3 1";
-	image_test[1] = "x c #FF0000";
-	image_test[2] = ". c #FFFFFF";
-	image_test[3] = "o c #FFFF00";
-	image_test[4] = "xxxxxxxxxx";
-	image_test[5] = "x..o..o..x";
-	image_test[6] = "x.o..o..ox";
-	image_test[7] = "xo..o..o.x";
-	image_test[8] = "x..o..o..x";
-	image_test[9] = "x.o..o..ox";
-	image_test[10] = "xo..o..o.x";
-	image_test[11] = "x..o..o..x";
-	image_test[12] = "x.o..o..ox";
-	image_test[13] = "xxxxxxxxxx";
-
-	if (!fractol->mlx)
-	{
-		perror("MLX not initialized\n");
-		exit(1);
-	}
-	img = mlx_xpm_to_image(fractol->mlx, "test_image.xpm", &width, &height);
-	if (!img)
-	{
-		perror("img not generated\n");
-		close_handle(fractol);
-	}
-	mlx_put_image_to_window(fractol->mlx, fractol->win, img, 700, 300);
-}
-
 int	main(int argc, char **argv)
 {
 	t_fractol	*fractol;
-	int			width;
-	int			height;
 
-	if (argc < 3)
+	if (argc < 2)
 	{
 		printf("You can use:");
 		printf("\n\t- mandelbrot");
 		printf("\n\t- julia\n");
 		return (1);
 	}
-	width = atoi(argv[1]);
-	height = atoi(argv[2]);
-	fractol = fractol_init(width, height);
+	fractol = fractol_init(argv[1]);
 	if (!fractol)
 		return (1);
-	create_image(fractol);
+	draw_fractol(fractol);
 	mlx_loop(fractol->mlx);
 	return (0);
 }

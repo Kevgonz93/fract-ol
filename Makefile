@@ -9,7 +9,7 @@ OS = $(shell uname)
 
 
 ifeq ($(OS), Darwin)
-	MLX_DIR = minilibx-macos
+	MLX_DIR = minilibx-linux
 	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 	X11_FLAGS = -I/opt/X11/include -L/opt/X11/lib -lX11 -lXext
 else

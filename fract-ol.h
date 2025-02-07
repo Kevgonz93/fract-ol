@@ -1,15 +1,15 @@
 #ifndef FRACT_OL_H
 # define FRACT_OL_H
 
-# include "minilibx-macos/mlx.h"
+# include "minilibx-linux/mlx.h"
 # include "src/types.h"
 # include <stdlib.h>
 # include <stdio.h>
+# include <string.h>
 
 // FRACTOL.C
 
 int		key_hook(int key, t_fractol *fractol);
-void	create_image(t_fractol *fractol);
 
 // HANDLES.C
 
@@ -22,5 +22,6 @@ int		move_handle(int key, t_fractol *fractol);
 int		draw_fractol(t_fractol *fractol);
 int		mouse_click(int button, int x, int y, t_fractol *fractol);
 int		mouse_move(int x, int y, t_fractol *fractol);
+int		mandelbrot(t_fractol *fractol, int px, int py);
 
 #endif
