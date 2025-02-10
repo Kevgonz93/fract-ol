@@ -32,7 +32,44 @@ int	mandelbrot(t_fractol *fractol, int px, int py)
 	}
 	if (i == fractol->max_iter)
 		return (0x000000);
-	return (fractol->color * i);
+	return (fractol->current_color->color * i);
+}
+
+int	julia(t_fractol *fractol, int px, int py)
+{
+	double	x;
+	double	y;
+	double	x2;
+	double	y2;
+	double	x_temp;
+	int		i;
+	double	zoom;
+
+	zoom = fractol->zoom;
+	x = (px - (fractol->width / 2.0)) * (4.0 / zoom) / fractol->width + fractol->x;
+	y = (py - (fractol->height / 2.0)) * (4.0 / zoom) / fractol->height + fractol->y;
+	x2 = x;
+	y2 = y;
+	i = 0;
+	while (x2 * x2 + y2 * y2 <= 4 && i < fractol->max_iter)
+	{
+		x_temp = x2 * x2 - y2 * y2 + fractol->mouse->x / 1000.0;
+		y2 = 2 * x2 * y2 + fractol->mouse->y / 1000.0;
+		x2 = x_temp;
+		i++;
+	}
+	if (i == fractol->max_iter)
+		return (0x000000);
+	return (fractol->current_color->color * i);
+}
+
+void	reset_fractol(t_fractol *fractol)
+{
+	fractol->zoom = 1;
+	fractol->x = 0;
+	fractol->y = 0;
+	fractol->max_iter = 100;
+	fractol->current_color = &fractol->colors->color_1;
 }
 
 int	draw_fractol(t_fractol *fractol)
