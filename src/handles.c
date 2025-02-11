@@ -22,6 +22,7 @@ void	color_handle(int key, t_fractol *fractol)
 		fractol->current_color = &fractol->colors->color_9;
 	else if (key == 48)
 		fractol->current_color = &fractol->colors->color_10;
+	printf("color: %d\n", fractol->current_color->index);
 	draw_fractol(fractol);
 }
 
@@ -37,26 +38,21 @@ int	zoom_handle(int key, t_fractol *fractol)
 	mouse_x = fractol->mouse->x;
 	mouse_y = fractol->mouse->y;
 	if (key == 43 || key == 65451)
-	{
 		zoom *= 1.1;
-		printf("zoom in : %f\n", zoom);
-	}
-	else if (key == 45 || key == 65453)
-	{
-		zoom *= 0.9;
-		printf("zoom out : %f\n", zoom);
-	}
 	else
-		return (0);
+		zoom *= 0.9;
 	if (zoom < 0.0001)
 		zoom = 0.0001;
-	x_world = fractol->x + (mouse_x - fractol->width / 2) * (4.0 / fractol->zoom) / fractol->width;
-	y_world = fractol->y + (mouse_y - fractol->height / 2) * (4.0 / fractol->zoom) / fractol->height;
+	x_world = fractol->x + (mouse_x - fractol->width / 2)
+		* (4.0 / fractol->zoom) / fractol->width;
+	y_world = fractol->y + (mouse_y - fractol->height / 2)
+		* (4.0 / fractol->zoom) / fractol->height;
 	fractol->zoom = zoom;
-	fractol->x = x_world - (mouse_x - fractol->width / 2) * (4.0 / fractol->zoom) / fractol->width;
-	fractol->y = y_world - (mouse_y - fractol->height / 2) * (4.0 / fractol->zoom) / fractol->height;
+	fractol->x = x_world - (mouse_x - fractol->width / 2)
+		* (4.0 / fractol->zoom) / fractol->width;
+	fractol->y = y_world - (mouse_y - fractol->height / 2)
+		* (4.0 / fractol->zoom) / fractol->height;
 	printf("zoom: %f\n", fractol->zoom);
-	draw_fractol(fractol);
 	return (0);
 }
 
@@ -74,6 +70,7 @@ int	close_handle(t_fractol *fractol)
 	if (fractol->colors)
 		free(fractol->colors);
 	free(fractol);
+	printf("fract-ol closed\n");
 	exit(0);
 	return (0);
 }
@@ -93,4 +90,14 @@ int	move_handle(int key, t_fractol *fractol)
 		fractol->y += move;
 	printf("x: %f, y: %f\n", fractol->x, fractol->y);
 	return (0);
+}
+
+void	reset_fractol(t_fractol *fractol)
+{
+	fractol->zoom = 1;
+	fractol->x = 0;
+	fractol->y = 0;
+	fractol->max_iter = 100;
+	fractol->current_color = &fractol->colors->color_1;
+	printf("fract-ol reset\n");
 }

@@ -30,12 +30,13 @@ typedef struct s_fractol
 {
 	void		*mlx;
 	void		*win;
-	int			max_iter;
 	int			width;
 	int			height;
 	double		zoom;
+	double		c;
 	double		x;
 	double		y;
+	int			max_iter;
 	t_colors	*colors;
 	t_color		*current_color;
 	t_mouse		*mouse;
