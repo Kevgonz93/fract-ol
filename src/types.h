@@ -1,5 +1,16 @@
 #include "../fract-ol.h"
 
+typedef struct s_image
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	int		width;
+	int		height;
+}	t_image;
+
 typedef struct s_color
 {
 	int	index;
@@ -32,11 +43,11 @@ typedef struct s_fractol
 	void		*win;
 	int			width;
 	int			height;
+	double		offset_x;
+	double		offset_y;
 	double		zoom;
-	double		c;
-	double		x;
-	double		y;
 	int			max_iter;
+	t_image		*image;
 	t_colors	*colors;
 	t_color		*current_color;
 	t_mouse		*mouse;

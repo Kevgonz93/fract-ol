@@ -30,34 +30,38 @@ int	zoom_handle(int key, t_fractol *fractol)
 {
 	double	mouse_x;
 	double	mouse_y;
+	double	old_zoom;
 	double	zoom;
-	double	x_world;
-	double	y_world;
 
-	zoom = fractol->zoom;
-	mouse_x = fractol->mouse->x;
-	mouse_y = fractol->mouse->y;
-	if (key == 43 || key == 65451)
-		zoom *= 1.1;
-	else
-		zoom *= 0.9;
-	if (zoom < 0.0001)
-		zoom = 0.0001;
-	x_world = fractol->x + (mouse_x - fractol->width / 2)
-		* (4.0 / fractol->zoom) / fractol->width;
-	y_world = fractol->y + (mouse_y - fractol->height / 2)
-		* (4.0 / fractol->zoom) / fractol->height;
-	fractol->zoom = zoom;
-	fractol->x = x_world - (mouse_x - fractol->width / 2)
-		* (4.0 / fractol->zoom) / fractol->width;
-	fractol->y = y_world - (mouse_y - fractol->height / 2)
-		* (4.0 / fractol->zoom) / fractol->height;
+	mlx_mouse_get_pos(fractol->mlx, fractol->win, &fractol->mouse->x, &fractol->mouse->y);
+	printf("mouse x: %d mouse y: %d\n", fractol->mouse->x, fractol->mouse->y);
+	mouse_x = (fractol->mouse->x - fractol->width / 2.0)
+		* (4.0 / fractol->width) * fractol->zoom + fractol->offset_x;
+	mouse_y = (fractol->mouse->y - fractol->height / 2.0)
+		* (4.0 / fractol->height) * fractol->zoom + fractol->offset_y;
+	old_zoom = fractol->zoom;
+	if (key == 43 || key == 65451 || key == 4)
+		fractol->zoom *= 1.1;
+	else if (key == 45 || key == 65453 || key == 5)
+		fractol->zoom *= 0.9;
+	zoom = fractol->zoom / old_zoom;
+	fractol->offset_x = mouse_x - (fractol->mouse->x - fractol->width / 2.0)
+        * (4.0 / fractol->width) * fractol->zoom * zoom + fractol->offset_x;
+    fractol->offset_y = mouse_y - (fractol->mouse->y - fractol->height / 2.0)
+        * (4.0 / fractol->height) * fractol->zoom * zoom + fractol->offset_y;
 	printf("zoom: %f\n", fractol->zoom);
+	draw_fractol(fractol);
 	return (0);
 }
 
 int	close_handle(t_fractol *fractol)
 {
+	if (fractol->image)
+	{
+		if (fractol->image->img)
+			mlx_destroy_image(fractol->mlx, fractol->image->img);
+		free(fractol->image);
+	}
 	if (fractol->win)
 		mlx_destroy_window(fractol->mlx, fractol->win);
 	if (fractol->mlx)
@@ -71,33 +75,22 @@ int	close_handle(t_fractol *fractol)
 		free(fractol->colors);
 	free(fractol);
 	printf("fract-ol closed\n");
-	exit(0);
-	return (0);
+	exit(1);
 }
 
-int	move_handle(int key, t_fractol *fractol)
-{
-	double	move;
+// int	move_handle(int key, t_fractol *fractol)
+// {
 
-	move = (1.0 / fractol->zoom) * 0.3;
-	if (key == 123 || key == 65361)
-		fractol->x -= move;
-	else if (key == 124 || key == 65363)
-		fractol->x += move;
-	else if (key == 126 || key == 65362)
-		fractol->y -= move;
-	else if (key == 125 || key == 65364)
-		fractol->y += move;
-	printf("x: %f, y: %f\n", fractol->x, fractol->y);
-	return (0);
-}
+// }
 
 void	reset_fractol(t_fractol *fractol)
 {
+	fractol->width = 800;
+	fractol->height = 800;
 	fractol->zoom = 1;
-	fractol->x = 0;
-	fractol->y = 0;
 	fractol->max_iter = 100;
 	fractol->current_color = &fractol->colors->color_1;
-	printf("fract-ol reset\n");
+	fractol->image->width = fractol->width;
+	fractol->image->height = fractol->height;
+	draw_fractol(fractol);
 }

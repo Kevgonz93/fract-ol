@@ -1,8 +1,9 @@
 NAME = fractol
 
 SRC = ${wildcard *.c}
+SRC_AUX = ${wildcard src/aux/*.c}
 SRC_SRC = ${wildcard src/*.c}
-SRC_ALL = $(SRC) $(SRC_SRC)
+SRC_ALL = $(SRC) $(SRC_SRC) $(SRC_AUX)
 OBJ = $(SRC_ALL:.c=.o)
 
 OS = $(shell uname)
