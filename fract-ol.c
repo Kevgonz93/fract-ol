@@ -8,7 +8,7 @@ int	main(int argc, char **argv)
 	{
 		printf("You can use:");
 		printf("\n\tmandelbrot");
-		printf("\n\tjulia\n");
+		printf("\n\tjulia c_re c_im\n");
 		return (0);
 	}
 	fractol = fractol_init(argv);

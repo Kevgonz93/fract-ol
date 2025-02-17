@@ -40,6 +40,8 @@ typedef struct s_fractol
 	double		zoom;
 	double		escape;
 	int			max_iter;
+	double		c_re;
+	double		c_im;
 	t_image		image;
 	t_colors	*colors;
 	t_color		*current_color;

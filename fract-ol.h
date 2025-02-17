@@ -11,7 +11,7 @@
 // FRACTALS.C
 
 int			mandelbrot(t_fractol *fractol, int px, int py);
-// int			julia(t_fractol *fractol, int px, int py);
+int			julia(t_fractol *fractol, int px, int py);
 
 // HANDLES.C
 

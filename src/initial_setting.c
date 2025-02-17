@@ -66,8 +66,20 @@ static void	init_data(t_fractol *fractol, char **argv)
 	fractol->current_color = &fractol->colors->palette[0];
 	if (!strcmp(argv[1], "mandelbrot"))
 		fractol->fractal = mandelbrot;
-	// else if (!strcmp(argv[1], "julia"))
-	// 	fractol->fractal = julia;
+	else if (!strcmp(argv[1], "julia"))
+	{
+		if (argv[2] && argv[3])
+		{
+			fractol->c_re = ft_atof(argv[2]);
+			fractol->c_im = ft_atof(argv[3]);
+		}
+		else
+		{
+			fractol->c_re = -0.7;
+			fractol->c_im= 0.27015;
+		}
+		fractol->fractal = julia;
+	}
 	else
 	{
 		perror("invalid fractal");
