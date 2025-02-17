@@ -4,37 +4,47 @@ static void	init_mouse(t_fractol *fractol)
 {
 	t_mouse	*mouse;
 
+	if (!fractol)
+	{
+		perror("fractol not initialized");
+		close_handle(fractol);
+		return ;
+	}
 	mouse = (t_mouse *)malloc(sizeof(t_mouse));
 	if (!mouse)
 	{
 		perror("malloc");
 		close_handle(fractol);
+		return ;
 	}
+	mouse->x = 0;
+	mouse->y = 0;
 	fractol->mouse = mouse;
-	mlx_mouse_hook(fractol->win, mouse_hook, fractol);
 }
 
-static t_colors	*init_colors(void)
+t_colors	*init_colors(void)
 {
 	t_colors	*colors;
+	int			i;
 
-	colors = (t_colors *)malloc(sizeof(t_colors));
+	colors = malloc(sizeof(t_colors));
 	if (!colors)
+		return (NULL);
+	colors->palette = malloc(sizeof(t_color) * 10);
+	if (!colors->palette)
 	{
-		perror("malloc");
 		free(colors);
 		return (NULL);
 	}
-	colors->color_1 = (t_color){1, 0x8A2BE2};
-	colors->color_2 = (t_color){2, 0xDC143C};
-	colors->color_3 = (t_color){3, 0xFF8C00};
-	colors->color_4 = (t_color){4, 0x32CD32};
-	colors->color_5 = (t_color){5, 0x4682B4};
-	colors->color_6 = (t_color){6, 0xDA70D6};
-	colors->color_7 = (t_color){7, 0x20B2AA};
-	colors->color_8 = (t_color){8, 0xFFD700};
-	colors->color_9 = (t_color){9, 0xFF69B4};
-	colors->color_10 = (t_color){10, 0x6A5ACD};
+	colors->size = 10;
+	i = 0;
+	while (i < 10)
+	{
+		colors->palette[i].index = i;
+		colors->palette[i].color = 0xFFFFFF;
+		i++;
+	}
+	reasigning_colors(colors);
 	return (colors);
 }
 
@@ -48,16 +58,14 @@ static void	init_data(t_fractol *fractol, char **argv)
 	}
 	fractol->width = 800;
 	fractol->height = 800;
-	fractol->offset_x = 0;
-	fractol->offset_y = 0;
-	fractol->zoom = 1;
+	fractol->offset_x = 0.0;
+	fractol->offset_y = 0.0;
+	fractol->zoom = 1.0;
+	fractol->escape = 2.0;
 	fractol->max_iter = 100;
-	fractol->current_color = &fractol->colors->color_1;
+	fractol->current_color = &fractol->colors->palette[0];
 	if (!strcmp(argv[1], "mandelbrot"))
-	{
 		fractol->fractal = mandelbrot;
-		printf("generating mandelbrot\n");
-	}
 	// else if (!strcmp(argv[1], "julia"))
 	// 	fractol->fractal = julia;
 	else
@@ -65,37 +73,25 @@ static void	init_data(t_fractol *fractol, char **argv)
 		perror("invalid fractal");
 		close_handle(fractol);
 	}
+	printf("fractal asignated\n");
 }
 
-static void	init_image(t_fractol *fractol, char **argv)
+t_image	init_image(t_fractol *fractol, char **argv)
 {
-	t_image	*image;
-	(void)argv;
+	t_image	image;
 
-	image = (t_image *)malloc(sizeof(t_image));
-	if (!image)
-	{
-		perror("malloc");
-		close_handle(fractol);
-	}
-	image->img = mlx_new_image(fractol->mlx, fractol->width, fractol->height);
-	if (!image->img)
+	(void)argv;
+	image.img = mlx_new_image(fractol->mlx, fractol->width, fractol->height);
+	if (!image.img)
 	{
 		perror("mlx_new_image fail");
-		free(image);
 		close_handle(fractol);
 	}
-	image->addr = mlx_get_data_addr(image->img,
-			&image->bits_per_pixel, &image->line_length, &image->endian);
-	if (!image->addr)
-	{
-		perror("mlx_get_data_addr fail");
-		free(image);
-		close_handle(fractol);
-	}
-	image->width = fractol->width;
-	image->height = fractol->height;
-	fractol->image = image;
+	image.addr = mlx_get_data_addr(image.img, &image.bits_per_pixel,
+			&image.line_length, &image.endian);
+	image.width = fractol->width;
+	image.height = fractol->height;
+	return (image);
 }
 
 t_fractol	*fractol_init(char **fractal)
@@ -105,11 +101,23 @@ t_fractol	*fractol_init(char **fractal)
 	fractol = (t_fractol *)malloc(sizeof(t_fractol));
 	if (!fractol)
 		return (perror("malloc"), NULL);
+	printf("fractol mallocate\n");
 	init_data(fractol, fractal);
+	printf("data initiated\n");
 	fractol->mlx = mlx_init();
 	if (!fractol->mlx)
-		return (perror("mlx_init fail"), free(fractol), NULL);
-	init_image(fractol, fractal);
+	{
+		perror("mlx_init fail");
+		close_handle(fractol);
+	}
+	printf("mlx initiated\n");
+	fractol->image = init_image(fractol, fractal);
+	if (!fractol->image.img)
+	{
+		perror("init_image fail");
+		close_handle(fractol);
+	}
+	printf("image initiated\n");
 	fractol->win = mlx_new_window(fractol->mlx,
 			fractol->width, fractol->height, "fract-ol");
 	if (!fractol->win)
@@ -117,9 +125,23 @@ t_fractol	*fractol_init(char **fractal)
 		perror("mlx_new_window fail");
 		close_handle(fractol);
 	}
+	printf("window initiated\n");
 	init_mouse(fractol);
+	if (!fractol->mouse)
+	{
+		perror("mouse not initiated");
+		close_handle(fractol);
+	}
+	printf("mouse initiated\n");
+	printf("------------------- ALL SETTING INITIATED -------------------\n");
+	if (!fractol)
+	{
+		perror("malloc");
+		close_handle(fractol);
+	}
+	printf("mouse : %p\n", fractol->mouse);
+	mlx_mouse_hook(fractol->win, mouse_hook, fractol);
 	mlx_key_hook(fractol->win, key_hook, fractol);
-	mlx_loop_hook(fractol->mlx, draw_fractol, fractol);
 	mlx_hook(fractol->win, 17, 0, close_handle, fractol);
 	return (fractol);
 }

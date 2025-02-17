@@ -9,12 +9,11 @@ int	main(int argc, char **argv)
 		printf("You can use:");
 		printf("\n\tmandelbrot");
 		printf("\n\tjulia\n");
-		return (1);
+		return (0);
 	}
 	fractol = fractol_init(argv);
 	if (!fractol)
-		return (1);
-	printf("fractol initiated\n");
+		return (0);
 	draw_fractol(fractol);
 	mlx_loop(fractol->mlx);
 	return (0);

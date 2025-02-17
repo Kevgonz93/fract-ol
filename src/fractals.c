@@ -15,8 +15,8 @@ int	mandelbrot(t_fractol *fractol, int x, int y)
 	double	tmp;
 	int		i;
 
-	c_re = (x - fractol->width / 2.0) * (4.0 / fractol->width) * fractol->zoom;
-	c_im = (y - fractol->height / 2.0) * (4.0 / fractol->height) * fractol->zoom;
+	c_re = fractol->offset_x + (x - fractol->width / 2.0) * (4.0 / fractol->width) / fractol->zoom;
+	c_im = fractol->offset_y + (y - fractol->height / 2.0) * (4.0 / fractol->height) / fractol->zoom;
 	z_re = 0;
 	z_im = 0;
 	i = 0;
@@ -34,6 +34,6 @@ int	mandelbrot(t_fractol *fractol, int x, int y)
 
 // int	julia(t_fractol *fractol, int px, int py)
 // {
-	
+
 // }
 

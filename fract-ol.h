@@ -17,19 +17,23 @@ int			mandelbrot(t_fractol *fractol, int px, int py);
 
 int			zoom_handle(int key, t_fractol *fractol);
 void		color_handle(int key, t_fractol *fractol);
-// int			move_handle(int key, t_fractol *fractol);
+int			move_handle(int key, t_fractol *fractol);
 int			close_handle(t_fractol *fractol);
 void		reset_fractol(t_fractol *fractol);
 
 // UTILS.C
 
-int			key_hook(int key, t_fractol *fractol);
-int			draw_fractol(t_fractol *fractol);
+void		reasigning_colors(t_colors *colors);
 void		put_pixel(t_image *image, int x, int y, int color);
-int			mouse_hook(int key, t_fractol *fractol);
+int			draw_fractol(t_fractol *fractol);
 
 // INITIAL_SETTING.C
 
 t_fractol	*fractol_init(char **fractal);
+
+// HOOKS.C
+
+int			key_hook(int key, t_fractol *fractol);
+int			mouse_hook(int key, int x, int y, t_fractol *fractol);
 
 #endif

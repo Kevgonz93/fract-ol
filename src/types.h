@@ -19,16 +19,8 @@ typedef struct s_color
 
 typedef struct s_colors
 {
-	t_color	color_1;
-	t_color	color_2;
-	t_color	color_3;
-	t_color	color_4;
-	t_color	color_5;
-	t_color	color_6;
-	t_color	color_7;
-	t_color	color_8;
-	t_color	color_9;
-	t_color	color_10;
+	t_color	*palette;
+	int		size;
 }	t_colors;
 
 typedef struct s_mouse
@@ -46,8 +38,9 @@ typedef struct s_fractol
 	double		offset_x;
 	double		offset_y;
 	double		zoom;
+	double		escape;
 	int			max_iter;
-	t_image		*image;
+	t_image		image;
 	t_colors	*colors;
 	t_color		*current_color;
 	t_mouse		*mouse;

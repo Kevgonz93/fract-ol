@@ -27,6 +27,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	make -C $(MLX_DIR)
 	$(CC) $(CFLAGS) $(OBJ) -I$(MLX_DIR) $(X11_FLAGS) $(MLX_FLAGS) -o $(NAME)
+	make clean
 
 %.o: %.c fract-ol.h
 	$(CC) $(CFLAGS) -I$(MLX_DIR) -I/opt/X11/include -c $< -o $@
