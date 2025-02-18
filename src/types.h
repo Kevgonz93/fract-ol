@@ -1,4 +1,4 @@
-#include "../fract-ol.h"
+#include "../fractol.h"
 
 typedef struct s_image
 {

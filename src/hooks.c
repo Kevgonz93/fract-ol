@@ -1,5 +1,6 @@
-#include "../fract-ol.h"
+#include "../fractol.h"
 
+// FUNCTION FOR GET EVENTS FROM MOUSE
 int	mouse_hook(int button, int x, int y, t_fractol *fractol)
 {
 	(void)x;
@@ -23,6 +24,7 @@ int	mouse_hook(int button, int x, int y, t_fractol *fractol)
 	return (0);
 }
 
+// FUNCTION FOR GET EVENTS FROM KEYBOARD
 int	key_hook(int key, t_fractol *fractol)
 {
 	printf("the key is: %d\n", key);

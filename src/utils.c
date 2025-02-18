@@ -1,5 +1,15 @@
-#include "../fract-ol.h"
+#include "../fractol.h"
 
+// FUNCTION FOR CHANGE FOR THE NEXT COLOR
+void	next_color(t_fractol *fractol)
+{
+	if (fractol->current_color->index == fractol->colors->size - 1)
+		fractol->current_color = &fractol->colors->palette[0];
+	else
+		fractol->current_color++;
+}
+
+// FUNCTION FOR REASIGNING COLORS - COLORS OF THE PALETTE
 void	reasigning_colors(t_colors *colors)
 {
 	colors->palette[0].color = 0x8A2BE2;
@@ -14,6 +24,7 @@ void	reasigning_colors(t_colors *colors)
 	colors->palette[9].color = 0x6A5ACD;
 }
 
+// FUNCTION FOR DRAWING PIXELS
 void	put_pixel(t_image *image, int x, int y, int color)
 {
 	char	*dst;
@@ -25,6 +36,7 @@ void	put_pixel(t_image *image, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
+// FUNCTION FOR DRAWING FRACTOL
 int	draw_fractol(t_fractol *fractol)
 {
 	int	x;
@@ -48,3 +60,15 @@ int	draw_fractol(t_fractol *fractol)
 	return (0);
 }
 
+// FUNCTION FOR RESETING FRACTOL
+void	reset_fractol(t_fractol *fractol)
+{
+	fractol->width = 800;
+	fractol->height = 800;
+	fractol->zoom = 1;
+	fractol->max_iter = 100;
+	fractol->current_color = &fractol->colors->palette[0];
+	fractol->offset_x = 0;
+	fractol->offset_y = 0;
+	draw_fractol(fractol);
+}

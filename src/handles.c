@@ -1,12 +1,4 @@
-#include "../fract-ol.h"
-
-void	next_color(t_fractol *fractol)
-{
-	if (fractol->current_color->index == fractol->colors->size - 1)
-		fractol->current_color = &fractol->colors->palette[0];
-	else
-		fractol->current_color++;
-}
+#include "../fractol.h"
 
 void	color_handle(int key, t_fractol *fractol)
 {
@@ -15,30 +7,26 @@ void	color_handle(int key, t_fractol *fractol)
 		perror("fractol/colors not initialized");
 		close_handle(fractol);
 	}
-	if (key == 49)
-		fractol->current_color = &fractol->colors->palette[0];
-	else if (key == 50)
-		fractol->current_color = &fractol->colors->palette[1];
-	else if (key == 51)
-		fractol->current_color = &fractol->colors->palette[2];
-	else if (key == 52)
-		fractol->current_color = &fractol->colors->palette[3];
-	else if (key == 53)
-		fractol->current_color = &fractol->colors->palette[4];
-	else if (key == 54)
-		fractol->current_color = &fractol->colors->palette[5];
-	else if (key == 55)
-		fractol->current_color = &fractol->colors->palette[6];
-	else if (key == 56)
-		fractol->current_color = &fractol->colors->palette[7];
-	else if (key == 57)
-		fractol->current_color = &fractol->colors->palette[8];
-	else if (key == 48)
-		fractol->current_color = &fractol->colors->palette[9];
+	if (key > 47 && key < 58)
+	{
+		printf("key: %d\n", key);
+		fractol->current_color = &fractol->colors->palette[key - 48];
+	}
 	else if (key == 1)
 		next_color(fractol);
 	printf("color: %d\n", fractol->current_color->color);
 	draw_fractol(fractol);
+}
+// FUNCTION FOR GETTING THE MOUSE POSITION
+static double	aux_zoom_handle(t_fractol *fratol, char c)
+{
+	if (c == 'x')
+		return (fratol->offset_x + (fratol->mouse->x - fratol->width / 2.0)
+			* (4.0 / fratol->width) * fratol->zoom);
+	else if (c == 'y')
+		return (fratol->offset_y + (fratol->mouse->y - fratol->height / 2.0)
+			* (4.0 / fratol->height) * fratol->zoom);
+	return (0);
 }
 
 int	zoom_handle(int key, t_fractol *fractol)
@@ -52,11 +40,10 @@ int	zoom_handle(int key, t_fractol *fractol)
 		perror("fractol/mouse not initialized");
 		close_handle(fractol);
 	}
-	mouse_x = fractol->offset_x + (fractol->mouse->x - fractol->width / 2.0)
-		* (4.0 / fractol->width) * fractol->zoom;
-	mouse_y = fractol->offset_y + (fractol->mouse->y - fractol->height / 2.0)
-		* (4.0 / fractol->height) * fractol->zoom;
-	mlx_mouse_get_pos(fractol->mlx, fractol->win, &fractol->mouse->x, &fractol->mouse->y);
+	mouse_x = aux_zoom_handle(fractol, 'x');
+	mouse_y = aux_zoom_handle(fractol, 'y');
+	mlx_mouse_get_pos(fractol->mlx, fractol->win,
+		&fractol->mouse->x, &fractol->mouse->y);
 	printf("mouse x: %d mouse y: %d\n", fractol->mouse->x, fractol->mouse->y);
 	if (key == 43 || key == 65451 || key == 4)
 		zoom_factor = 1.1;
@@ -85,18 +72,6 @@ int	move_handle(int key, t_fractol *fractol)
 	return (0);
 }
 
-void	reset_fractol(t_fractol *fractol)
-{
-	fractol->width = 800;
-	fractol->height = 800;
-	fractol->zoom = 1;
-	fractol->max_iter = 100;
-	fractol->current_color = &fractol->colors->palette[0];
-	fractol->offset_x = 0;
-	fractol->offset_y = 0;
-	draw_fractol(fractol);
-}
-
 int	close_handle(t_fractol *fractol)
 {
 	if (!fractol)
@@ -115,6 +90,8 @@ int	close_handle(t_fractol *fractol)
 	}
 	if (fractol->mouse)
 		free(fractol->mouse);
+	if (fractol->colors->palette)
+		free(fractol->colors->palette);
 	if (fractol->colors)
 		free(fractol->colors);
 	if (fractol)
