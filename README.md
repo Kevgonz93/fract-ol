@@ -86,8 +86,8 @@ $ ./fractol
 
 📦 fract-ol
 ├── 📂 aux 				# Funcines extraídas de libft.
-├── 📂 minilibx		 	# miniLibX descomprimida y compilada.
-├── 📂 printf		 	# Función ft_printf realizada previamente.
+├── 📂 minilibx			# miniLibX descomprimida y compilada.
+├── 📂 printf			# Función ft_printf realizada previamente.
 ├── 📂 src 				# Funciones útiles para la la app (handles, hooks, dibujo de los fractales,...) y cabecera con las estructuras utilizadas.
 ├── fractol.c 			# Funcion main y función iniciadora de la estructura de datos.
 ├── fractol.h 			# Cabecera del programa.
