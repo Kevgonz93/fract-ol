@@ -12,8 +12,9 @@ El propósito de este proyecto es profundizar en el uso de gráficos en C median
 Para compilar y ejecutar este proyecto, necesitas:
 
 - Un sistema UNIX (macOS o Linux)
-- MiniLibX instalada
 - Make y un compilador compatible con C (gcc o clang)
+- En macOS: Los frameworks OpenGL y AppKit (incluidos por defecto en el sistema)
+- En Linux: Las bibliotecas X11 y Xext
 
 ---
 
@@ -85,7 +86,7 @@ $ ./fractol
 
 📦 fract-ol
 ├── 📂 aux 				# Funcines auxiliares para libft
-├── 📂 minilibx-linux 	# miniLibX descomprimida y compilada
+├── 📂 minilibx		 	# miniLibX descomprimida y compilada
 ├── 📂 src 				# Funciones útiles para la la app (handles, hooks, dibujo de los fractales,...) y cabecera con las estructuras utilizadas.
 ├── fractol.c 			# Funcion main y función iniciadora de la estructura de datos.
 ├── fractol.h 			# Cabecera del programa
