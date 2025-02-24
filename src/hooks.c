@@ -10,7 +10,7 @@ int	mouse_hook(int button, int x, int y, t_fractol *fractol)
 		perror("fractol/mouse not initialized");
 		close_handle(fractol);
 	}
-	printf("the key is: %d\n", button);
+	ft_printf("the key is: %d\n", button);
 	if (button == 4 || button == 5)
 	{
 		zoom_handle(button, fractol);

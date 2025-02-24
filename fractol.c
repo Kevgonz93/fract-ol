@@ -19,7 +19,9 @@ t_fractol	*fractol_init(char **fractal)
 		perror("fractol not initialized");
 		close_handle(fractol);
 	}
-	printf("------------------- ALL SETTING INITIATED -------------------\n");
+	ft_printf("-------------------------");
+	ft_printf(" ALL SETTINGS INITIALIZED ");
+	ft_printf("-------------------------\n");
 	return (fractol);
 }
 
@@ -29,9 +31,10 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 	{
-		printf("You can use:");
-		printf("\n\tmandelbrot");
-		printf("\n\tjulia c_re c_im\n");
+		ft_printf("usage: %s [fractal]\n", argv[0]);
+		ft_printf("\tmandelbrot\n");
+		ft_printf("\tjulia [c_real] [c_imaginary]\n");
+		ft_printf("\ttricorn\n");
 		return (0);
 	}
 	fractol = fractol_init(argv);

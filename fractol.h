@@ -4,6 +4,7 @@
 # include "minilibx/mlx.h"
 # include "aux/aux.h"
 # include "src/types.h"
+# include "printf/ft_printf.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <string.h>

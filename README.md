@@ -58,14 +58,14 @@ El Makefile de este proyecto está hecho para poder compilar tanto en MacOS y Li
 
 ```bash
 $ ./fractol
-	You can use:
+	usage: ./fractol [fractal]
 		mandelbrot
-		julia c_re c_im
+		julia [c_real] [c_imaginary]
 		tricorn
 
-- Mandelbrot: el fractal se generará con valores predeterminados.
-- Julia		: el fractal se basará según los parámetros introducidos, que corresponden al valor de C.
-- Tricorn	: el fractal se generará con valores predeterminados.
+- Mandelbrot	: el fractal se generará con valores predeterminados.
+- Julia			: el fractal se basará según los parámetros introducidos, que corresponden al valor de C.
+- Tricorn		: el fractal se generará con valores predeterminados.
 ```
 
 ### Movimientos
@@ -85,11 +85,12 @@ $ ./fractol
 ```
 
 📦 fract-ol
-├── 📂 aux 				# Funcines auxiliares para libft
-├── 📂 minilibx		 	# miniLibX descomprimida y compilada
+├── 📂 aux 				# Funcines extraídas de libft.
+├── 📂 minilibx		 	# miniLibX descomprimida y compilada.
+├── 📂 printf		 	# Función ft_printf realizada previamente.
 ├── 📂 src 				# Funciones útiles para la la app (handles, hooks, dibujo de los fractales,...) y cabecera con las estructuras utilizadas.
 ├── fractol.c 			# Funcion main y función iniciadora de la estructura de datos.
-├── fractol.h 			# Cabecera del programa
+├── fractol.h 			# Cabecera del programa.
 ├── Makefile 			# Makefile para compilar el proyecto.
 ├── minilibx-linux.tgz	# MiniLibx comprimida.
 ├── notex.md 			# Notas teóricas de los fractales a tratar.
@@ -103,8 +104,11 @@ $ ./fractol
 ## 📝 Bonus
 
 ✅ Implementación de un fractal adicional: Tricorn
+
 ✅ Manejo de zoom con referencia a la posición del mouse
+
 ✅ Movimientos con flechas
+
 ✅ Rango de color variable
 
 ## 🧑‍💻 Autor

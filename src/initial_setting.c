@@ -20,7 +20,7 @@ void	init_mouse(t_fractol *fractol)
 	mouse->x = 0;
 	mouse->y = 0;
 	fractol->mouse = mouse;
-	printf("mouse initiated\n");
+	ft_printf("mouse initiated\n");
 }
 
 static t_colors	*init_colors(void)
@@ -46,15 +46,15 @@ static t_colors	*init_colors(void)
 		i++;
 	}
 	reasigning_colors(colors);
-	printf("colors initiated\n");
+	ft_printf("colors initiated\n");
 	return (colors);
 }
 
 static void	init_fractal(t_fractol *fractol, char **argv)
 {
-	if (!strcmp(argv[1], "mandelbrot"))
+	if (!ft_strncmp(argv[1], "mandelbrot", 10))
 		fractol->fractal = mandelbrot;
-	else if (!strcmp(argv[1], "julia"))
+	else if (!ft_strncmp(argv[1], "julia", 5))
 	{
 		if (argv[2] && argv[3])
 		{
@@ -68,14 +68,14 @@ static void	init_fractal(t_fractol *fractol, char **argv)
 		}
 		fractol->fractal = julia;
 	}
-	else if (!strcmp(argv[1], "tricorn"))
+	else if (!ft_strncmp(argv[1], "tricorn", 7))
 		fractol->fractal = tricorn;
 	else
 	{
 		perror("invalid fractal");
 		close_handle(fractol);
 	}
-	printf("fractal initiated\n");
+	ft_printf("fractal initiated\n");
 }
 
 void	init_data(t_fractol *fractol, char **argv)
@@ -95,7 +95,7 @@ void	init_data(t_fractol *fractol, char **argv)
 	fractol->max_iter = 100;
 	fractol->current_color = &fractol->colors->palette[0];
 	init_fractal(fractol, argv);
-	printf("data initiated\n");
+	ft_printf("data initiated\n");
 }
 
 t_image	init_image(t_fractol *fractol, char **argv)
@@ -113,6 +113,6 @@ t_image	init_image(t_fractol *fractol, char **argv)
 			&image.line_length, &image.endian);
 	image.width = fractol->width;
 	image.height = fractol->height;
-	printf("image initiated\n");
+	ft_printf("image initiated\n");
 	return (image);
 }
