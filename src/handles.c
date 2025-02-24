@@ -17,6 +17,7 @@ void	color_handle(int key, t_fractol *fractol)
 	printf("color: %d\n", fractol->current_color->color);
 	draw_fractol(fractol);
 }
+
 // FUNCTION FOR GETTING THE MOUSE POSITION
 static double	aux_zoom_handle(t_fractol *fratol, char c)
 {
