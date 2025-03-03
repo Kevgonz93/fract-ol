@@ -1,7 +1,7 @@
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# include "minilibx/mlx.h"
+# include "minilibx-linux/mlx.h"
 # include "aux/aux.h"
 # include "src/types.h"
 # include "ft_printf/ft_printf.h"
